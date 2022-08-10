@@ -63,6 +63,13 @@ export async function updateArticle(req, res, next) {
   const { id } = req.params;
   const { title, content } = req.body;
 
+  if (!title || !content) {
+    const error = new Error('Title and content are required');
+    error.status = 400;
+
+    return next (error);
+  }
+
   try {
     await Article.findOneAndUpdate({ _id: id }, { title, content });
 
