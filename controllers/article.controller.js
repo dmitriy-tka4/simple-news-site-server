@@ -4,6 +4,7 @@ import Article from '../models/article.model.js';
 export async function getAllArticles(req, res, next) {
   try {
     const articles = await Article.find();
+    console.log(articles);
 
     res.json(articles);
   } catch (e) {
@@ -57,30 +58,31 @@ export async function createArticle(req, res, next) {
   }
 }
 
-// not implemented
-
 // put - обновление
 export async function updateArticle(req, res, next) {
-  // 405 (Method Not Allowed)
-  // res.sendStatus(405);
+  const { id } = req.params;
+  const { title, content } = req.body;
 
-  // или
-  const error = new Error('Method Not Allowed');
-  error.status = 405;
+  try {
+    await Article.findOneAndUpdate({ _id: id }, { title, content });
 
-  next(error);
+    res.sendStatus(200);
+  } catch (e) {
+    next(e);
+  }
 }
 
 // delete - удаление
 export async function deleteArticle(req, res, next) {
-  // 405 (Method Not Allowed)
-  // res.sendStatus(405);
+  const { id } = req.params;
 
-  // или
-  const error = new Error('Method Not Allowed');
-  error.status = 405;
+  try {
+    await Article.deleteOne({ _id: id });
 
-  next(error);
+    res.sendStatus(204);
+  } catch (e) {
+    next(e);
+  }
 }
 
 // patch - частичное обновление
