@@ -3,7 +3,7 @@ import Article from '../models/article.model.js';
 // получение всех
 export async function getAllArticles(req, res, next) {
   try {
-    const articles = await Article.find();
+    const articles = await Article.find().sort({ 'createdAt': 'desc' });
     console.log(articles);
 
     res.json(articles);
@@ -38,11 +38,15 @@ export async function getById(req, res, next) {
 export async function createArticle(req, res, next) {
   const { title, content } = req.body;
 
-  const article = new Article({ title, content });
+  if (!title || !content) {
+    const error = new Error('Title and content are required');
+    error.status = 400;
 
-  // TODO: как обрабатывать, если обязательные поля не все пришли
-  // в catch ниже ошибку поймает и покажет
-  console.log('content', content);
+    return next (error);
+  }
+
+  // если обязательные поля не все пришли, в catch ниже валидатор модели ошибку поймает и покажет
+  const article = new Article({ title, content });
 
   try {
     const createdArticle = await article.save();
