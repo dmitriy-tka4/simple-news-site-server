@@ -11,15 +11,18 @@ Front-end, клиент на Angular, здесь [simple-news-site-client](https
 * REST API (методы, статусы ответа), все данные в формате JSON
 * Пользователей и авторизации нет
 * Обработка ошибок
+* Загрузка файлов (изображений) для статей (получаем ссылку для вставки в markdown) (`multer` и `uuid` для создания имени файла), добавлена проверка на MIME-types (только image)
 
 API docs:
 
-* `GET` `/articles/` - спискок всех новостей
+* `GET` `/articles` - спискок всех новостей
 * `GET` `/articles/:id` - получение одной новости по id
-* `POST` `/articles/` - создание новости
+* `POST` `/articles` - создание новости
 * `PUT` `/articles/:id` - обновление новости
 * `DELETE` `/articles/:id` - удаление новости
 * `PATCH` `/articles/:id` - *not implemented*
+
+* `POST` `/upload` - загрузка изображений
 
 ## TODO
 

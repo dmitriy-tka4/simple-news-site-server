@@ -5,8 +5,9 @@ import multer from 'multer';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 import cors from 'cors';
-import indexRoute from './routes/index.route.js'
-import articleRoute from './routes/article.route.js'
+import indexRoute from './routes/index.route.js';
+import articleRoute from './routes/article.route.js';
+import uploadRoute from './routes/upload.route.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'static')));
 
+// multer config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.resolve(__dirname, 'static', 'uploads'));
@@ -27,24 +29,25 @@ const storage = multer.diskStorage({
     cb(null, `${fileName}${path.extname(file.originalname)}`);
   }
 });
-app.use(multer({ storage: storage }).single('file'));
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.includes('image/')) {
+    cb(null, true); // принять файл
+  } else {
+    cb(null, false); // отклонить файл
+  }
+};
+
+app.use(multer({
+  storage: storage,
+  limits: { fileSize: '1048576' }, // default bytes = 1 Mb // - не работает, баг библиотеки
+  fileFilter: fileFilter
+}).single('file'));
+
+// base routes
 app.use('/', indexRoute);
 app.use('/articles', articleRoute);
-
-// file upload
-app.post('/upload', (req, res, next) => {
-  let data = req.file;
-
-  console.log(data);
-
-  if (!data) {
-    const error = new Error('Ошибка загрузки файла');
-    return next(e);
-  } else {
-    res.status(201).send(`http://localhost:3000/uploads/${data.filename}`);
-  }
-});
+app.use('/upload', uploadRoute);
 
 // 404
 app.use((req, res, next) => {
@@ -59,6 +62,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(err.status || 500).send(err.message);
 });
 

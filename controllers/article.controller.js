@@ -54,6 +54,7 @@ export async function createArticle(req, res, next) {
     // headers
     res.location(`/articles/${createdArticle._id}`);
 
+    // можно возвращать созданный article, но это необязательно, на клиенте есть все данные
     res.sendStatus(201);
   } catch (e) {
     e.status = 400; // or 422
