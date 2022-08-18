@@ -2,7 +2,7 @@
 
 REST API, серверная часть, построение архитектуры приложения Express
 
-Front-end, клиент на Angular, здесь [simple-news-site-client](https://github.com/dmitriy-tka4/simple-news-site-client)
+Front-end, клиент на Angular, здесь [https://github.com/dmitriy-tka4/simple-news-site-client](https://github.com/dmitriy-tka4/simple-news-site-client)
 
 ## Техническое задание
 

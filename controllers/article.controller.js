@@ -42,7 +42,7 @@ export async function createArticle(req, res, next) {
     const error = new Error('Title and content are required');
     error.status = 400;
 
-    return next (error);
+    return next(error);
   }
 
   // если обязательные поля не все пришли, в catch ниже валидатор модели ошибку поймает и покажет
@@ -72,7 +72,7 @@ export async function updateArticle(req, res, next) {
     const error = new Error('Title and content are required');
     error.status = 400;
 
-    return next (error);
+    return next(error);
   }
 
   try {
