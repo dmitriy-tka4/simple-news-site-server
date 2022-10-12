@@ -4,7 +4,7 @@ export function uploadFile(req, res, next) {
   console.log(data);
 
   if (!data) {
-    const error = new Error('Ошибка загрузки файла (загрузить можно только изображение размером не более 1 Мб)');
+    const error = new Error('Загрузить можно только изображение размером не более 1 Мб');
     return next(error);
   }
 
